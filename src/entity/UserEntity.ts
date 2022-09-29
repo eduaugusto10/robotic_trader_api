@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
-import { CustomerManagerEntity } from "./CustomerManager"
+import { CustomerManagerEntity } from "./CustomerManagerEntity"
 import { CustomerOrderEntity } from "./CustomerOrderEntity"
 
 @Entity('tbuser')
@@ -22,6 +22,9 @@ export class UserEntity {
 
     @Column("varchar", { length: '20' })
     administrator: string
+
+    @Column('varchar', { length: '20' })
+    ativated: string
 
     @OneToMany(() => CustomerOrderEntity, (customerorder) => customerorder.customerOrder)
     customerorder: CustomerOrderEntity[]

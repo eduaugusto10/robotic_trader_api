@@ -10,6 +10,9 @@ export class CustomerManagerEntity {
     @Column({ type: 'float' })
     balance: number
 
+    @Column({ type: 'date' })
+    date: Date
+
     @ManyToOne(() => UserEntity, (user) => user.customer)
     customer: UserEntity
 }

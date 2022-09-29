@@ -4,14 +4,15 @@ import { userRepository } from "../repositories/UserRepository";
 import bcrypt from 'bcrypt'
 
 export class UserController {
-
     async store(req: Request, res: Response) {
-        const { name, email, password, account } = req.body
+        const { name, email, password, account, ativated } = req.body
+
         const userExists = await userRepository.findOneBy({ email })
 
         if (userExists) {
             throw new BadRequestError("E-mail já cadastrado")
         }
+
         const hashPass = await bcrypt.hash(password, 10)
 
         const newUser = userRepository.create({
@@ -19,12 +20,12 @@ export class UserController {
             email,
             account,
             password: hashPass,
-            administrator: "N"
+            administrator: "N",
+            ativated
         })
 
         await userRepository.save(newUser)
         const { password: _, customer } = newUser
-
         return res.status(201).json(customer)
 
     }

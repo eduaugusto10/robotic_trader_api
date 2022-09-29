@@ -30,6 +30,9 @@ export class OrderEntity {
     @Column({ type: 'float' })
     lote: number
 
+    @Column({ type: 'date' })
+    date: Date
+
     @Column("varchar", { length: '20' })
     status: string
 

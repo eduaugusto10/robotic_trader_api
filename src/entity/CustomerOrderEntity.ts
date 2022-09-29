@@ -34,6 +34,9 @@ export class CustomerOrderEntity {
     @Column("varchar", { length: '40' })
     status: string
 
+    @Column({ type: 'date' })
+    date: Date
+
     @ManyToOne(() => UserEntity, (user) => user.customerorder)
     customerOrder: UserEntity
 
