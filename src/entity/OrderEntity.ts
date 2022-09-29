@@ -1,15 +1,15 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { UserEntity } from "./UserEntity";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
+@Entity('tborders')
 export class OrderEntity {
 
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({ type: 'varchar' })
+    @Column("varchar", { length: '20' })
     symbol: string
 
-    @Column({ type: 'varchar' })
+    @Column("varchar", { length: '20' })
     ticket: string
 
     @Column({ type: 'float' })
@@ -30,10 +30,7 @@ export class OrderEntity {
     @Column({ type: 'float' })
     lote: number
 
-    @Column({ type: 'varchar' })
+    @Column("varchar", { length: '20' })
     status: string
-
-    @ManyToOne(() => UserEntity, (user) => user.order)
-    order: UserEntity
 
 }

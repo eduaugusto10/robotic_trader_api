@@ -7,10 +7,10 @@ export class CustomerOrderEntity {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({ type: 'varchar' })
+    @Column("varchar", { length: '20' })
     symbol: string
 
-    @Column({ type: 'varchar' })
+    @Column("varchar", { length: '40' })
     ticket: string
 
     @Column({ type: 'float' })
@@ -31,7 +31,7 @@ export class CustomerOrderEntity {
     @Column({ type: 'float' })
     lote: number
 
-    @Column({ type: 'varchar' })
+    @Column("varchar", { length: '40' })
     status: string
 
     @ManyToOne(() => UserEntity, (user) => user.customerorder)

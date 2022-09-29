@@ -1,33 +1,33 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
+import { CustomerManagerEntity } from "./CustomerManager"
 import { CustomerOrderEntity } from "./CustomerOrderEntity"
-import { OrderEntity } from "./OrderEntity"
 
-@Entity()
+@Entity('tbuser')
 export class UserEntity {
 
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column("varchar", { length: '100' })
     name: string
 
-    @Column()
+    @Column("varchar", { length: '100' })
     email: string
 
-    @Column()
+    @Column({ type: 'varchar' })
     password: string
 
-    @Column()
+    @Column("varchar", { length: '100' })
     account: number
 
-    @Column()
+    @Column("varchar", { length: '20' })
     administrator: string
 
     @OneToMany(() => CustomerOrderEntity, (customerorder) => customerorder.customerOrder)
     customerorder: CustomerOrderEntity[]
-    
-    @OneToMany(() => OrderEntity, (operation) => operation.order)
-    order: OrderEntity[]
+
+    @OneToMany(() => CustomerManagerEntity, (operation) => operation.customer)
+    customer: CustomerManagerEntity[]
 
 
 }
