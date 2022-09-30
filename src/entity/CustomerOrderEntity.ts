@@ -37,7 +37,7 @@ export class CustomerOrderEntity {
     @Column({ type: 'date' })
     date: Date
 
-    @ManyToOne(() => UserEntity, (user) => user.customerorder)
+    @ManyToOne(() => UserEntity, (user) => user.customerOrder)
     customerOrder: UserEntity
 
 }

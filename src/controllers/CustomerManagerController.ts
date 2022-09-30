@@ -16,7 +16,7 @@ export class CustomerManagerController {
         }
 
         const order = customerManagerRepository.create({
-            id,
+            customer: id,
             balance,
             date
         })
@@ -31,9 +31,9 @@ export class CustomerManagerController {
         const balance = await customerManagerRepository
             .createQueryBuilder()
             .select("sum(balance)", "balance")
-            .addSelect("MONTH(date)","month")
-            .addSelect("Year(date)","year")
-            .where("userId = :id", { id })
+            .addSelect("MONTH(date)", "month")
+            .addSelect("Year(date)", "year")
+            .where("customerId = :id", { id })
             .andWhere("date > (now() - INTERVAL 12 month)")
             .groupBy("MONTH(date)")
             .orderBy("date", "ASC")
@@ -47,7 +47,21 @@ export class CustomerManagerController {
     }
 
     async getAll(req: Request, res: Response) {
+        const balanceTotal = await customerManagerRepository
+            .createQueryBuilder()
+            .select("sum(balance)", "balance")
+            .addSelect("Month(date)", "month")
+            .addSelect("Year(date)", "year")
+            .where("date > (now() - INTERVAL 12 month)")
+            .groupBy("MONTH(date)")
+            .orderBy("date", "ASC")
+            .getRawMany()
 
+        if (!balanceTotal) {
+            throw new BadRequestError("Nenhuma ordem encontrada")
+        }
+
+        res.send(balanceTotal)
     }
 
     async delete(req: Request, res: Response) {

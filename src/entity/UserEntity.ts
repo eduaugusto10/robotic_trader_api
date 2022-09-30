@@ -27,7 +27,7 @@ export class UserEntity {
     ativated: string
 
     @OneToMany(() => CustomerOrderEntity, (customerorder) => customerorder.customerOrder)
-    customerorder: CustomerOrderEntity[]
+    customerOrder: CustomerOrderEntity[]
 
     @OneToMany(() => CustomerManagerEntity, (operation) => operation.customer)
     customer: CustomerManagerEntity[]

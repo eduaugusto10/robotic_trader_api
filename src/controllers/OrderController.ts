@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { BadRequestError } from "../helpers/api-errors";
 import { orderRepository } from "../repositories/OrderRepository";
 
 export class OrderController {
@@ -34,9 +35,71 @@ export class OrderController {
         res.json(order)
     }
     async getById(req: Request, res: Response) {
-        
-     }
-    async getAll(req: Request, res: Response) { }
-    async delete(req: Request, res: Response) { }
-    async update(req: Request, res: Response) { }
+        const { id } = req.params
+        const order = await orderRepository.findOneBy({ id: Number(id) })
+
+        if (!order) {
+            throw new BadRequestError("Ordem não encontrada")
+        }
+
+        return res.json(order)
+    }
+
+    async getAll(req: Request, res: Response) {
+        const orders = await orderRepository.find()
+
+        if (!orders) {
+            throw new BadRequestError("Nenhum ordem encontrada")
+        }
+
+        return res.json(orders)
+    }
+    async delete(req: Request, res: Response) {
+        const { id } = req.params
+        const order = await orderRepository.findOneBy({ id: Number(id) })
+
+        if (!order) {
+            throw new BadRequestError("Ordem não encontrada")
+        }
+
+        await orderRepository.remove(order)
+
+        res.send()
+    }
+    async update(req: Request, res: Response) {
+        const { id } = req.params
+        const {
+            symbol,
+            ticket,
+            entry,
+            takeProfit,
+            stopLoss,
+            typeOrder,
+            lote,
+            status,
+            date,
+            operationType
+        } = req.body
+
+        const order = await orderRepository.findOneBy({ id: Number(id) })
+
+        if (!order) {
+            throw new BadRequestError("Ordem não encontrada")
+        }
+
+        await orderRepository.update(Number(id), {
+            symbol,
+            ticket,
+            entry,
+            takeProfit,
+            stopLoss,
+            typeOrder,
+            lote,
+            status,
+            date,
+            operationType
+        })
+
+        return res.send()
+    }
 }

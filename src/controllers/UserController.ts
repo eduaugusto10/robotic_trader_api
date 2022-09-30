@@ -53,6 +53,10 @@ export class UserController {
         const { id } = req.params
         const { name, email, account } = req.body
 
+        const user = await userRepository.findOneBy({ id: Number(id) })
+        if (!user) {
+            throw new BadRequestError("Nenhum usuário encontrado")
+        }
         await userRepository.update(parseInt(id), { name, email, account })
 
         return res.send()
