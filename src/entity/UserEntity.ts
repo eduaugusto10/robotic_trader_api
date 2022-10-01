@@ -32,5 +32,7 @@ export class UserEntity {
     @OneToMany(() => CustomerManagerEntity, (operation) => operation.customer)
     customer: CustomerManagerEntity[]
 
+    @Column({ type: 'datetime' })
+    validate: Date
 
 }

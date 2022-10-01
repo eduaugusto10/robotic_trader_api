@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 
 export class UserController {
     async store(req: Request, res: Response) {
-        const { name, email, password, account, ativated } = req.body
+        const { name, email, password, account, ativated, validate } = req.body
 
         const userExists = await userRepository.findOneBy({ email })
 
@@ -21,7 +21,8 @@ export class UserController {
             account,
             password: hashPass,
             administrator: "N",
-            ativated
+            ativated,
+            validate
         })
 
         await userRepository.save(newUser)
@@ -39,6 +40,24 @@ export class UserController {
         }
         const { password: _, ...customer } = user
         return res.json(customer)
+
+    }
+    async getByAccount(req: Request, res: Response) {
+        const today = new Date()
+        const { account } = req.params
+        const user = await userRepository.findOneBy({ account: Number(account) })
+
+        if (!user) {
+            throw new BadRequestError("Usuário não encontrado.")
+        }
+        if (user.ativated == "N") {
+            throw new BadRequestError("Usuário bloqueado, fale com o suporte")
+        }
+        if (today > user.validate) {
+            throw new BadRequestError("Licença vencida, fale com o suporte")
+        }
+        console.log(account)
+        return res.json({ "message": user.validate })
     }
 
     async getAll(req: Request, res: Response) {
@@ -51,13 +70,13 @@ export class UserController {
 
     async update(req: Request, res: Response) {
         const { id } = req.params
-        const { name, email, account } = req.body
+        const { name, email, account, validate, ativated, administrator } = req.body
 
         const user = await userRepository.findOneBy({ id: Number(id) })
         if (!user) {
             throw new BadRequestError("Nenhum usuário encontrado")
         }
-        await userRepository.update(parseInt(id), { name, email, account })
+        await userRepository.update(parseInt(id), { name, email, account, validate, ativated, administrator })
 
         return res.send()
     }

@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken'
 export class SessionController {
     async login(req: Request, res: Response) {
         const { email, password } = req.body
+        
         const user = await userRepository.findOneBy({ email })
 
         if (!user) {

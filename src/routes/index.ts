@@ -9,6 +9,7 @@ import { authMiddleware } from "../middlewares/authMiddleware";
 const routes = Router()
 
 routes.post('/user', new UserController().store)
+routes.get('/user-by-account/:account', new UserController().getByAccount)
 routes.post('/login', new SessionController().login)
 
 routes.use(authMiddleware)
