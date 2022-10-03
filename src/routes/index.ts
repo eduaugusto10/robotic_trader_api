@@ -11,6 +11,7 @@ const routes = Router()
 routes.post('/user', new UserController().store)
 routes.get('/user-by-account/:account', new UserController().getByAccount)
 routes.post('/login', new SessionController().login)
+routes.post('/order', new OrderController().store)
 
 routes.use(authMiddleware)
 // Users
@@ -29,7 +30,6 @@ routes.delete('/balance/:id', new CustomerManagerController().delete)
 // Orders
 routes.get('/order/:id', new OrderController().getById)
 routes.get('/order', new OrderController().getAll)
-routes.post('/order', new OrderController().store)
 routes.put('/order/:id', new OrderController().update)
 routes.delete('/order/:id', new OrderController().delete)
 

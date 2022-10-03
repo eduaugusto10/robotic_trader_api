@@ -14,12 +14,16 @@
      "strict": true,                                      /* Enable all strict type-checking options. */
      "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
      "strictPropertyInitialization": false,             /* Check for class properties that are declared but not set in the constructor. */
-     "typeRoots": ["./src/@types"]
+     "typeRoots": ["./src/@types"],
+     
    },
    "include":["src/**/*"],
    "exclude":["node_modules","dist",".gitignore",".env"],
    "ts-node":{
-     "files":true
+     "files":true,
+     "compilerOptions": {
+      "module": "commonjs"
+    }
    }
  }
  
