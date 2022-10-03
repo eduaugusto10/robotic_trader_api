@@ -35,4 +35,7 @@ export class UserEntity {
     @Column({ type: 'datetime' })
     validate: Date
 
+    @Column({ type: 'timestamp' })
+    create_time: Date
+
 }

@@ -34,10 +34,13 @@ export class CustomerOrderEntity {
     @Column("varchar", { length: '40' })
     status: string
 
-    @Column({ type: 'date' })
+    @Column({ type: 'datetime' })
     date: Date
 
     @ManyToOne(() => UserEntity, (user) => user.customerOrder)
     customerOrder: UserEntity
+
+    @Column({ type: 'timestamp' })
+    create_time: Date
 
 }

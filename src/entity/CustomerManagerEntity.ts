@@ -10,9 +10,12 @@ export class CustomerManagerEntity {
     @Column({ type: 'float' })
     balance: number
 
-    @Column({ type: 'date' })
+    @Column({ type: 'datetime' })
     date: Date
 
     @ManyToOne(() => UserEntity, (user) => user.customer)
     customer: UserEntity
+
+    @Column({ type: 'timestamp' })
+    create_time: Date
 }

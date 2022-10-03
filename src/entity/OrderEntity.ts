@@ -30,10 +30,13 @@ export class OrderEntity {
     @Column({ type: 'float' })
     lote: number
 
-    @Column({ type: 'date' })
+    @Column({ type: 'datetime' })
     date: Date
 
     @Column("varchar", { length: '20' })
     status: string
+
+    @Column({ type: 'timestamp' })
+    create_time: Date
 
 }
