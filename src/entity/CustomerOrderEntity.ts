@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { UserEntity } from "./UserEntity";
 
 @Entity('tbcustomerorders')
@@ -34,13 +34,13 @@ export class CustomerOrderEntity {
     @Column("varchar", { length: '40' })
     status: string
 
-    @Column({ type: 'datetime' })
-    date: Date
-
     @ManyToOne(() => UserEntity, (user) => user.customerOrder)
     customerOrder: UserEntity
 
-    @Column({ type: 'timestamp' })
-    create_time: Date
+    @CreateDateColumn()
+    create_at: Date
+
+    @UpdateDateColumn()
+    update_at: Date
 
 }

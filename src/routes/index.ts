@@ -12,6 +12,7 @@ routes.post('/user', new UserController().store)
 routes.get('/user-by-account/:account', new UserController().getByAccount)
 routes.post('/login', new SessionController().login)
 routes.post('/order', new OrderController().store)
+routes.get('/order-today', new OrderController().getOrderToday)
 
 routes.use(authMiddleware)
 // Users

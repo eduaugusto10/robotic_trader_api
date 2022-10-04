@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { UserEntity } from "./UserEntity";
 
 @Entity('tbcustomermanager')
@@ -16,6 +16,9 @@ export class CustomerManagerEntity {
     @ManyToOne(() => UserEntity, (user) => user.customer)
     customer: UserEntity
 
-    @Column({ type: 'timestamp' })
-    create_time: Date
+    @CreateDateColumn()
+    create_at: Date
+
+    @UpdateDateColumn()
+    update_at: Date
 }

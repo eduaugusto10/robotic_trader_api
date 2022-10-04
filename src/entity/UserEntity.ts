@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm"
 import { CustomerManagerEntity } from "./CustomerManagerEntity"
 import { CustomerOrderEntity } from "./CustomerOrderEntity"
 
@@ -35,7 +35,10 @@ export class UserEntity {
     @Column({ type: 'datetime' })
     validate: Date
 
-    @Column({ type: 'timestamp' })
-    create_time: Date
+    @CreateDateColumn()
+    create_at: Date
+
+    @UpdateDateColumn()
+    update_at: Date
 
 }

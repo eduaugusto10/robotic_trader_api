@@ -26,7 +26,6 @@ export class OrderController {
             typeOrder,
             lote,
             status,
-            date,
             operationType
         })
 
@@ -66,6 +65,17 @@ export class OrderController {
 
         res.send()
     }
+
+    async getOrderToday(req: Request, res: Response) {
+        const orders = await orderRepository.createQueryBuilder()
+            .select('*')
+            .where("create_at > (now() - INTERVAL 10 minute)")
+            .getRawMany()
+
+        const order = { "orders": orders, "length": orders.length }
+        return res.json(order)
+    }
+
     async update(req: Request, res: Response) {
         const { id } = req.params
         const {
@@ -77,7 +87,6 @@ export class OrderController {
             typeOrder,
             lote,
             status,
-            date,
             operationType
         } = req.body
 
@@ -96,7 +105,6 @@ export class OrderController {
             typeOrder,
             lote,
             status,
-            date,
             operationType
         })
 

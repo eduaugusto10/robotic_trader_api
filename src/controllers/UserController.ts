@@ -56,7 +56,7 @@ export class UserController {
         if (today > user.validate) {
             throw new BadRequestError("Licença vencida, fale com o suporte")
         }
-        console.log(account)
+
         return res.json({ "message": user.validate })
     }
 

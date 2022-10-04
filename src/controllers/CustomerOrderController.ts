@@ -14,7 +14,6 @@ export class CustomerOrderController {
             typeOrder,
             lote,
             status,
-            date,
             operationType,
             id
         } = req.body
@@ -33,7 +32,6 @@ export class CustomerOrderController {
             typeOrder,
             lote,
             status,
-            date,
             operationType,
             customerOrder: id
         })
@@ -87,7 +85,6 @@ export class CustomerOrderController {
             typeOrder,
             lote,
             status,
-            date,
             operationType,
             customerOrder
         } = req.body
@@ -107,7 +104,6 @@ export class CustomerOrderController {
             typeOrder,
             lote,
             status,
-            date,
             operationType,
             customerOrder
         })

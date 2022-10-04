@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('tborders')
 export class OrderEntity {
@@ -30,13 +30,13 @@ export class OrderEntity {
     @Column({ type: 'float' })
     lote: number
 
-    @Column({ type: 'datetime' })
-    date: Date
-
     @Column("varchar", { length: '20' })
     status: string
 
-    @Column({ type: 'timestamp' })
-    create_time: Date
+    @CreateDateColumn()
+    create_at: Date
+
+    @UpdateDateColumn()
+    update_at: Date
 
 }
