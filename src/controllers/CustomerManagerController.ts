@@ -75,7 +75,7 @@ export class CustomerManagerController {
 
     async createOrUpdate(req: Request, res: Response) {
         const { account } = req.params
-        const { balance, date } = req.body
+        const { balance, date, balanceToday } = req.body
 
         const user
             = await userRepository.createQueryBuilder()
@@ -99,6 +99,7 @@ export class CustomerManagerController {
             const newBalance = customerManagerRepository.create({
                 customer: user[0].id,
                 balance,
+                balanceToday,
                 date: dates
             })
 
@@ -108,6 +109,7 @@ export class CustomerManagerController {
         }
         const newBalance = customerManagerRepository.update({ id: balanceMonth[0].id }, {
             balance,
+            balanceToday,
             date: dates,
             customer: user[0].id
         })

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { BadRequestError } from "../helpers/api-errors";
 import { userRepository } from "../repositories/UserRepository";
 import bcrypt from 'bcrypt'
+import { customerManagerRepository } from "../repositories/CustomerManagerRepository";
 
 export class UserController {
     async store(req: Request, res: Response) {
@@ -64,6 +65,22 @@ export class UserController {
         const users = await userRepository.find()
         if (!users) {
             throw new BadRequestError("Nenhum usuário encontrado")
+        }
+        for (let i = 0; i < users.length; i++) {
+            const balanceUser = await customerManagerRepository.createQueryBuilder()
+                .select("*")
+                .where("customerId=:id", { id: users[i].id })
+                .orderBy("id", "ASC")
+                .limit(1)
+                .getRawMany()
+            if (balanceUser.length > 0) {
+                const newBalances = {
+                    "balance": balanceUser[0].balance,
+                    "balanceToday": balanceUser[0].balanceToday
+                }
+
+                users[i] = { ...users[i], ...newBalances }
+            }
         }
         return res.json(users)
     }

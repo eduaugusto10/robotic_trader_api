@@ -10,6 +10,9 @@ export class CustomerManagerEntity {
     @Column({ type: 'float' })
     balance: number
 
+    @Column({ type: 'float' })
+    balanceToday: number
+
     @Column({ type: 'datetime' })
     date: Date
 
