@@ -18,4 +18,4 @@ AppDataSource.initialize().then(() => {
         console.log(`Server running port: ${process.env.PORT}`)
     })
 
-}).catch(error => console.log(error))
+})
