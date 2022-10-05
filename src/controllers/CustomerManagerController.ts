@@ -86,10 +86,8 @@ export class CustomerManagerController {
         if (!user) {
             throw new BadRequestError('Usuário não encontrado')
         }
-        console.log(date)
         
         const dates = date.replaceAll(".", "-")
-        console.log(dates)
 
         const balanceMonth = await customerManagerRepository.createQueryBuilder()
             .select("*")
