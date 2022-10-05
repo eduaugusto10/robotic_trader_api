@@ -82,7 +82,6 @@ export class UserController {
                 users[i] = { ...users[i], ...newBalances }
             }
         }
-        console.log(users)
         return res.json(users)
     }
 
