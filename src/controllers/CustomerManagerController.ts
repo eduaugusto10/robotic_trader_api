@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { send } from "process";
 import { BadRequestError, PaymentRequireError } from "../helpers/api-errors";
 import { customerManagerRepository } from "../repositories/CustomerManagerRepository";
 import { userRepository } from "../repositories/UserRepository";
@@ -70,5 +71,45 @@ export class CustomerManagerController {
 
     async update(req: Request, res: Response) {
 
+    }
+
+    async createOrUpdate(req: Request, res: Response) {
+        const { account } = req.params
+        const { balance, date } = req.body
+
+        const user
+            = await userRepository.createQueryBuilder()
+                .select("*")
+                .where("account=:account", { account })
+                .getRawMany()
+
+        if (!user) {
+            throw new BadRequestError('Usuário não encontrado')
+        }
+
+        const dates = date.replaceAll(".", "-")
+        const balanceMonth = await customerManagerRepository.createQueryBuilder()
+            .select("*")
+            .where("Month(now())=Month(date)")
+            .andWhere("customerId = :id", { id: user[0].id })
+            .getRawMany()
+
+        if (balanceMonth.length == 0) {
+            const newBalance = customerManagerRepository.create({
+                customer: user[0].id,
+                balance,
+                date: dates
+            })
+
+            await customerManagerRepository.save(newBalance)
+
+            return res.status(200).json(newBalance)
+        }
+        const newBalance = customerManagerRepository.update({ id: balanceMonth[0].id }, {
+            balance,
+            date: dates,
+            customer: user[0].id
+        })
+        return res.json(newBalance)
     }
 }

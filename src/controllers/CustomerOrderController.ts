@@ -20,7 +20,7 @@ export class CustomerOrderController {
 
         const user = await userRepository.findOneBy({ id })
 
-        if(!user){
+        if (!user) {
             throw new BadRequestError("Usuário não encontrado ou inativo")
         }
         const order = customerOrderRepository.create({
@@ -40,6 +40,8 @@ export class CustomerOrderController {
 
         res.json(order)
     }
+
+
     async getById(req: Request, res: Response) {
         const { id } = req.params
         const order = await customerOrderRepository.findOneBy({ id: Number(id) })

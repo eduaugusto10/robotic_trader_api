@@ -9,10 +9,13 @@ import { authMiddleware } from "../middlewares/authMiddleware";
 const routes = Router()
 
 routes.post('/user', new UserController().store)
-routes.get('/user-by-account/:account', new UserController().getByAccount)
 routes.post('/login', new SessionController().login)
+
+//METATRADER
+routes.get('/user-by-account/:account', new UserController().getByAccount)
 routes.post('/order', new OrderController().store)
 routes.get('/order-today', new OrderController().getOrderToday)
+routes.post('/customer-ts/:account', new CustomerManagerController().createOrUpdate)
 
 routes.use(authMiddleware)
 // Users
@@ -35,9 +38,9 @@ routes.put('/order/:id', new OrderController().update)
 routes.delete('/order/:id', new OrderController().delete)
 
 // Customer Orders
+routes.post('/customerorder', new CustomerOrderController().store)
 routes.get('/customerorder/:id', new CustomerOrderController().getById)
 routes.get('/customerorder', new CustomerOrderController().getAll)
-routes.post('/customerorder', new CustomerOrderController().store)
 routes.put('/customerorder/:id', new CustomerOrderController().update)
 routes.delete('/customerorder/:id', new CustomerOrderController().delete)
 
