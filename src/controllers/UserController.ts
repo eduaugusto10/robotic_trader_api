@@ -6,7 +6,7 @@ import { customerManagerRepository } from "../repositories/CustomerManagerReposi
 
 export class UserController {
     async store(req: Request, res: Response) {
-        const { name, email, password, account, ativated, validate } = req.body
+        const { name, email, password, account, ativated, phone, validate } = req.body
 
         const userExists = await userRepository.findOneBy({ email })
 
@@ -20,6 +20,7 @@ export class UserController {
             name,
             email,
             account,
+            phone,
             password: hashPass,
             administrator: "N",
             ativated,
@@ -87,13 +88,13 @@ export class UserController {
 
     async update(req: Request, res: Response) {
         const { id } = req.params
-        const { name, email, account, validate, ativated, administrator } = req.body
+        const { name, email, account, phone, validate, ativated, administrator } = req.body
 
         const user = await userRepository.findOneBy({ id: Number(id) })
         if (!user) {
             throw new BadRequestError("Nenhum usuário encontrado")
         }
-        await userRepository.update(parseInt(id), { name, email, account, validate, ativated, administrator })
+        await userRepository.update(parseInt(id), { name, email, account, phone, validate, ativated, administrator })
 
         return res.send()
     }

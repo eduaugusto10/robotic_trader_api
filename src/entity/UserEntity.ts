@@ -14,6 +14,9 @@ export class UserEntity {
     @Column("varchar", { length: '100' })
     email: string
 
+    @Column("varchar", { length: '20' })
+    phone: string
+
     @Column({ type: 'varchar' })
     password: string
 
