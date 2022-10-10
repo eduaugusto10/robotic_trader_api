@@ -100,7 +100,8 @@ export class UserController {
     }
 
     async delete(req: Request, res: Response) {
-        const user = await userRepository.findOneBy({ id: Number(req.params.id) })
+        const { id } = req.params
+        const user = await userRepository.findOneBy({ id: Number(id) })
 
         if (!user) {
             throw new BadRequestError("Usuário não encontrado")
