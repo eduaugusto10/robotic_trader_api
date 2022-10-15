@@ -13,6 +13,7 @@ export class CustomerOrderController {
             stopLoss,
             typeOrder,
             lote,
+            magicNumber,
             status,
             operationType,
             id
@@ -31,6 +32,7 @@ export class CustomerOrderController {
             stopLoss,
             typeOrder,
             lote,
+            magicNumber,
             status,
             operationType,
             customerOrder: id
@@ -86,6 +88,7 @@ export class CustomerOrderController {
             stopLoss,
             typeOrder,
             lote,
+            magicNumber,
             status,
             operationType,
             customerOrder
@@ -106,6 +109,7 @@ export class CustomerOrderController {
             typeOrder,
             lote,
             status,
+            magicNumber,
             operationType,
             customerOrder
         })

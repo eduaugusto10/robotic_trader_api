@@ -34,6 +34,9 @@ export class CustomerOrderEntity {
     @Column("varchar", { length: '40' })
     status: string
 
+    @Column({ type: 'integer' })
+    magicNumber: number
+
     @ManyToOne(() => UserEntity, (user) => user.customerOrder)
     customerOrder: UserEntity
 

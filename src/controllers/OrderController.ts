@@ -13,7 +13,7 @@ export class OrderController {
             typeOrder,
             lote,
             status,
-            date,
+            magicNumber,
             operationType
         } = req.body
 
@@ -26,6 +26,7 @@ export class OrderController {
             typeOrder,
             lote,
             status,
+            magicNumber,
             operationType
         })
 
@@ -67,10 +68,7 @@ export class OrderController {
     }
 
     async getOrderToday(req: Request, res: Response) {
-        const orders = await orderRepository.createQueryBuilder()
-            .select('*')
-            .where("create_at > (now() - INTERVAL 10 minute)")
-            .getRawMany()
+        const orders = await orderRepository.findLastMinutes()
 
         const order = { "orders": orders, "length": orders.length }
         return res.json(order)
@@ -87,6 +85,7 @@ export class OrderController {
             typeOrder,
             lote,
             status,
+            magicNumber,
             operationType
         } = req.body
 
@@ -105,9 +104,31 @@ export class OrderController {
             typeOrder,
             lote,
             status,
+            magicNumber,
             operationType
         })
 
         return res.send()
+    }
+
+    async closeErrorSymbol(req: Request, res: Response) {
+        const { symbol, status } = req.body
+
+        const order = orderRepository.create({
+            symbol,
+            ticket: "0",
+            entry: 0,
+            takeProfit: 0,
+            stopLoss: 0,
+            typeOrder: 99,
+            lote: 0,
+            status,
+            magicNumber: 99,
+            operationType: 0
+        })
+
+        await orderRepository.save(order)
+
+        res.json(order)
     }
 }

@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { send } from "process";
 import { BadRequestError, PaymentRequireError } from "../helpers/api-errors";
 import { customerManagerRepository } from "../repositories/CustomerManagerRepository";
 import { userRepository } from "../repositories/UserRepository";
@@ -29,17 +28,7 @@ export class CustomerManagerController {
 
     async getById(req: Request, res: Response) {
         const { id } = req.params
-        const balance = await customerManagerRepository
-            .createQueryBuilder()
-            .select("sum(balance)", "balance")
-            .addSelect("MONTH(date)", "month")
-            .addSelect("Year(date)", "year")
-            .where("customerId = :id", { id })
-            .andWhere("date > (now() - INTERVAL 12 month)")
-            .groupBy("MONTH(date)")
-            .orderBy("date", "ASC")
-            .getRawMany()
-
+        const balance = await customerManagerRepository.findTwelveMonthsById(Number(id))
         if (!balance) {
             throw new BadRequestError("Nenhuma ordem encontrada")
         }
@@ -48,15 +37,7 @@ export class CustomerManagerController {
     }
 
     async getAll(req: Request, res: Response) {
-        const balanceTotal = await customerManagerRepository
-            .createQueryBuilder()
-            .select("sum(balance)", "balance")
-            .addSelect("Month(date)", "month")
-            .addSelect("Year(date)", "year")
-            .where("date > (now() - INTERVAL 12 month)")
-            .groupBy("MONTH(date)")
-            .orderBy("date", "ASC")
-            .getRawMany()
+        const balanceTotal = await customerManagerRepository.findTwelveMonths()
 
         if (!balanceTotal) {
             throw new BadRequestError("Nenhuma ordem encontrada")
@@ -75,7 +56,7 @@ export class CustomerManagerController {
 
     async createOrUpdate(req: Request, res: Response) {
         const { account } = req.params
-        const { balance, date, balanceToday } = req.body
+        const { balance, date, balanceToday, closedOrders, openOrders, accountBalance } = req.body
 
         const user
             = await userRepository.createQueryBuilder()
@@ -86,7 +67,7 @@ export class CustomerManagerController {
         if (!user) {
             throw new BadRequestError('Usuário não encontrado')
         }
-        
+
         const dates = date.replaceAll(".", "-")
 
         const balanceMonth = await customerManagerRepository.createQueryBuilder()
@@ -95,11 +76,19 @@ export class CustomerManagerController {
             .andWhere("customerId = :id", { id: user[0].id })
             .getRawMany()
 
+        const percClosedOrder = ((closedOrders/accountBalance)*100)
+        const percOpenOrder = ((openOrders/accountBalance)*100)
+
         if (balanceMonth.length == 0) {
             const newBalance = customerManagerRepository.create({
                 customer: user[0].id,
                 balance,
                 balanceToday,
+                closedOrders,
+                percClosedOrders:percClosedOrder,
+                percOpenOrders: percOpenOrder,
+                accountBalance,
+                openOrders,
                 date: dates
             })
 
@@ -110,6 +99,11 @@ export class CustomerManagerController {
         const newBalance = customerManagerRepository.update({ id: balanceMonth[0].id }, {
             balance,
             balanceToday,
+            closedOrders,
+            accountBalance,
+            openOrders,
+            percClosedOrders:percClosedOrder,
+            percOpenOrders: percOpenOrder,
             date: dates,
             customer: user[0].id
         })

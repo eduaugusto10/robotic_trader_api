@@ -6,7 +6,23 @@ import { customerManagerRepository } from "../repositories/CustomerManagerReposi
 
 export class UserController {
     async store(req: Request, res: Response) {
-        const { name, email, password, account, ativated, phone, validate } = req.body
+        const {
+            name,
+            email,
+            password,
+            account,
+            ativated,
+            phone,
+            administrator,
+            multpInsider,
+            validateInsider,
+            multpExplicitus,
+            validateExplicitus,
+            multpPoupDobrada,
+            validatePoupDobrada,
+            description,
+            broker,
+            passBroker } = req.body
 
         const userExists = await userRepository.findOneBy({ email })
 
@@ -22,9 +38,17 @@ export class UserController {
             account,
             phone,
             password: hashPass,
-            administrator: "N",
+            administrator,
             ativated,
-            validate
+            broker,
+            multpInsider,
+            validateInsider,
+            multpExplicitus,
+            validateExplicitus,
+            multpPoupDobrada,
+            validatePoupDobrada,
+            description,
+            passBroker
         })
 
         await userRepository.save(newUser)
@@ -55,11 +79,8 @@ export class UserController {
         if (user.ativated == "N") {
             throw new BadRequestError("Usuário bloqueado, fale com o suporte")
         }
-        if (today > user.validate) {
-            throw new BadRequestError("Licença vencida, fale com o suporte")
-        }
-
-        return res.json({ "message": user.validate })
+ 
+        return res.json({ "message": "Usuario liberado" })
     }
 
     async getAll(req: Request, res: Response) {
@@ -68,12 +89,7 @@ export class UserController {
             throw new BadRequestError("Nenhum usuário encontrado")
         }
         for (let i = 0; i < users.length; i++) {
-            const balanceUser = await customerManagerRepository.createQueryBuilder()
-                .select("*")
-                .where("customerId=:id", { id: users[i].id })
-                .orderBy("id", "ASC")
-                .limit(1)
-                .getRawMany()
+            const balanceUser = await customerManagerRepository.findBalanceById(users[i].id)
             if (balanceUser.length > 0) {
                 const newBalances = {
                     "balance": balanceUser[0].balance,
@@ -88,13 +104,44 @@ export class UserController {
 
     async update(req: Request, res: Response) {
         const { id } = req.params
-        const { name, email, account, phone, validate, ativated, administrator } = req.body
+        const {
+            name,
+            email,
+            account,
+            phone,
+            ativated,
+            administrator,
+            multpInsider,
+            validateInsider,
+            multpExplicitus,
+            validateExplicitus,
+            multpPoupDobrada,
+            validatePoupDobrada,
+            description,
+            broker,
+            passBroker } = req.body
 
         const user = await userRepository.findOneBy({ id: Number(id) })
         if (!user) {
             throw new BadRequestError("Nenhum usuário encontrado")
         }
-        await userRepository.update(parseInt(id), { name, email, account, phone, validate, ativated, administrator })
+        await userRepository.update(parseInt(id), {
+            name,
+            email,
+            account,
+            phone,
+            ativated,
+            administrator,
+            multpInsider,
+            validateInsider,
+            multpExplicitus,
+            validateExplicitus,
+            multpPoupDobrada,
+            validatePoupDobrada,
+            description,
+            broker,
+            passBroker
+        })
 
         return res.send()
     }

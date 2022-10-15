@@ -33,6 +33,9 @@ export class OrderEntity {
     @Column("varchar", { length: '20' })
     status: string
 
+    @Column({ type: 'integer' })
+    magicNumber: number
+
     @CreateDateColumn()
     create_at: Date
 

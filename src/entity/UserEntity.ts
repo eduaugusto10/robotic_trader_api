@@ -20,6 +20,9 @@ export class UserEntity {
     @Column({ type: 'varchar' })
     password: string
 
+    @Column("varchar", { length: '50' })
+    broker: string
+
     @Column("varchar", { length: '100' })
     account: number
 
@@ -35,8 +38,29 @@ export class UserEntity {
     @OneToMany(() => CustomerManagerEntity, (operation) => operation.customer)
     customer: CustomerManagerEntity[]
 
+    @Column({ type: 'integer' })
+    multpInsider: number
+
     @Column({ type: 'datetime' })
-    validate: Date
+    validateInsider: Date
+
+    @Column({ type: 'integer' })
+    multpExplicitus: number
+
+    @Column({type:'varchar'})
+    passBroker: string
+
+    @Column({ type: 'datetime' })
+    validateExplicitus: Date
+
+    @Column({ type: 'integer' })
+    multpPoupDobrada: number
+
+    @Column({ type: 'datetime' })
+    validatePoupDobrada: Date
+
+    @Column({ type: 'varchar' })
+    description: string
 
     @CreateDateColumn()
     create_at: Date

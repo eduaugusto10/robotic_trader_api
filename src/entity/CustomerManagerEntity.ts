@@ -13,6 +13,21 @@ export class CustomerManagerEntity {
     @Column({ type: 'float' })
     balanceToday: number
 
+    @Column({ type: 'float' })
+    closedOrders: number
+
+    @Column({ type: 'float' })
+    openOrders: number
+
+    @Column({ type: 'float' })
+    accountBalance: number
+
+    @Column({ type: 'float' })
+    percClosedOrders: number
+
+    @Column({ type: 'float' })
+    percOpenOrders: number
+
     @Column({ type: 'datetime' })
     date: Date
 
