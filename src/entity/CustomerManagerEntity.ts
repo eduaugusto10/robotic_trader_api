@@ -14,10 +14,22 @@ export class CustomerManagerEntity {
     balanceToday: number
 
     @Column({ type: 'float' })
-    closedOrders: number
+    closedOrdersInsider: number
 
     @Column({ type: 'float' })
-    openOrders: number
+    closedOrdersExplicitus: number
+
+    @Column({ type: 'float' })
+    closedOrdersPoupDobrada: number
+
+    @Column({ type: 'float' })
+    openOrdersInsider: number
+
+    @Column({ type: 'float' })
+    openOrdersExplicitus: number
+
+    @Column({ type: 'float' })
+    openOrdersPoupDobrada: number
 
     @Column({ type: 'float' })
     accountBalance: number

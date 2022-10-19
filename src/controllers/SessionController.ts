@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken'
 export class SessionController {
     async login(req: Request, res: Response) {
         const { email, password } = req.body
-        
+
         const user = await userRepository.findOneBy({ email })
 
         if (!user) {
@@ -22,11 +22,11 @@ export class SessionController {
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET ?? '', {
             expiresIn: '8h'
         })
-
+        
         const { password: _, ...userLogin } = user
         return res.json({
             user: userLogin,
-            token: token
+            token: token,
         })
     }
 }

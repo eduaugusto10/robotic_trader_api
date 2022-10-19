@@ -56,7 +56,16 @@ export class CustomerManagerController {
 
     async createOrUpdate(req: Request, res: Response) {
         const { account } = req.params
-        const { balance, date, balanceToday, closedOrders, openOrders, accountBalance } = req.body
+        const {
+            balance,
+            date,
+            balanceToday,
+            closedOrdersInsider,
+            closedOrdersExplicitus,
+            closedOrdersPoupDobrada,
+            openOrdersInsider,
+            openOrdersExplicitus,
+            openOrdersPoupDobrada, accountBalance } = req.body
 
         const user
             = await userRepository.createQueryBuilder()
@@ -76,19 +85,19 @@ export class CustomerManagerController {
             .andWhere("customerId = :id", { id: user[0].id })
             .getRawMany()
 
-        const percClosedOrder = ((closedOrders/accountBalance)*100)
-        const percOpenOrder = ((openOrders/accountBalance)*100)
 
         if (balanceMonth.length == 0) {
             const newBalance = customerManagerRepository.create({
                 customer: user[0].id,
                 balance,
                 balanceToday,
-                closedOrders,
-                percClosedOrders:percClosedOrder,
-                percOpenOrders: percOpenOrder,
                 accountBalance,
-                openOrders,
+                closedOrdersInsider,
+                closedOrdersExplicitus,
+                closedOrdersPoupDobrada,
+                openOrdersInsider,
+                openOrdersExplicitus,
+                openOrdersPoupDobrada,
                 date: dates
             })
 
@@ -99,11 +108,13 @@ export class CustomerManagerController {
         const newBalance = customerManagerRepository.update({ id: balanceMonth[0].id }, {
             balance,
             balanceToday,
-            closedOrders,
+            closedOrdersInsider,
+            closedOrdersExplicitus,
+            closedOrdersPoupDobrada,
+            openOrdersInsider,
+            openOrdersExplicitus,
+            openOrdersPoupDobrada,
             accountBalance,
-            openOrders,
-            percClosedOrders:percClosedOrder,
-            percOpenOrders: percOpenOrder,
             date: dates,
             customer: user[0].id
         })

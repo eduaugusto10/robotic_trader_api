@@ -64,8 +64,18 @@ export class UserController {
         if (!user) {
             throw new BadRequestError("Usuário não encontrado.")
         }
+        const assignInsider = (new Date(user.validateInsider) > new Date() ? true : false)
+        const assignExplicitus = (new Date(user.validateExplicitus) > new Date() ? true : false)
+        const assignPoupDobrada = (new Date(user.validatePoupDobrada) > new Date() ? true : false)
         const { password: _, ...customer } = user
-        return res.json(customer)
+        return res.json({
+            customer,
+            validate: {
+                "assignInsider": assignInsider,
+                "assignExplicitus": assignExplicitus,
+                "assignPoupDobrada": assignPoupDobrada
+            }
+        })
 
     }
     async getByAccount(req: Request, res: Response) {
@@ -79,8 +89,15 @@ export class UserController {
         if (user.ativated == "N") {
             throw new BadRequestError("Usuário bloqueado, fale com o suporte")
         }
- 
-        return res.json({ "message": "Usuario liberado" })
+        const configuration = {
+            "validateExplicitus": new Date() < new Date(user.validateExplicitus) ? true : false,
+            "validateInsider": new Date() < new Date(user.validateInsider) ? true : false,
+            "validatePoupDobrada": new Date() < new Date(user.validatePoupDobrada) ? true : false,
+            "multpExplicitus": user.multpExplicitus,
+            "multpInsider": user.multpInsider,
+            "multpPoupDobrada": user.multpPoupDobrada
+        }
+        return res.json(configuration)
     }
 
     async getAll(req: Request, res: Response) {
