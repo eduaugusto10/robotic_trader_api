@@ -5,7 +5,7 @@ export const orderRepository = AppDataSource.getRepository(OrderEntity).extend({
     findLastMinutes() {
         return this.createQueryBuilder()
             .select('*')
-            .where("create_at > (now() - INTERVAL 10 minute)")
+            .where("create_at > (now() - INTERVAL 1 minute)")
             .getRawMany()
     }
 })
