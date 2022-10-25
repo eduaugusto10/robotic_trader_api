@@ -4,6 +4,7 @@ import { CustomerOrderController } from "../controllers/CustomerOrderController"
 import { MasterOrdersController } from "../controllers/MasterOrdersController";
 import { OrderController } from "../controllers/OrderController";
 import { SessionController } from "../controllers/SessionController";
+import { UserPassController } from '../controllers/UserPassController'
 import { SlaveOrdersController } from "../controllers/SlaveOrdersController";
 import { UserController } from "../controllers/UserController";
 import { authMiddleware } from "../middlewares/authMiddleware";
@@ -12,6 +13,8 @@ const routes = Router()
 
 routes.post('/user', new UserController().store)
 routes.post('/login', new SessionController().login)
+routes.post('/forgot-password', new UserPassController().forgotPassword)
+routes.post('/reset-password',new UserPassController().passwordReset)
 
 //METATRADER
 routes.get('/user-by-account/:account', new UserController().getByAccount)

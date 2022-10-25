@@ -20,6 +20,12 @@ export class UserEntity {
     @Column({ type: 'varchar' })
     password: string
 
+    @Column({ type: 'varchar' })
+    passwordResetToken: string
+
+    @Column({type:'datetime'})
+    passwordResetExpires: Date
+
     @Column("varchar", { length: '50' })
     broker: string
 
@@ -47,7 +53,7 @@ export class UserEntity {
     @Column({ type: 'integer' })
     multpExplicitus: number
 
-    @Column({type:'varchar'})
+    @Column({ type: 'varchar' })
     passBroker: string
 
     @Column({ type: 'datetime' })
