@@ -53,7 +53,7 @@ export class UserPassController {
                 <br />
                 <p1>Você pediu para alterar sua senha!</p1>
               </div>
-              <a href="http://localhost:3000/reset/${user.email}/${token}" style="background-color: #c4c4c4;width: 300px; height: 60px; border-radius: 10px; margin: 30px; font-size: 18px; border: none">
+              <a href="https://robotictrader.online/reset/${user.email}/${token}" style="background-color: #c4c4c4;width: 300px; height: 60px; border-radius: 10px; margin: 30px; font-size: 18px; border: none">
                 Clique aqui para alterar
               </a>
               <div style="width: 100%; display: flex; flex-direction: column; text-align: left">
