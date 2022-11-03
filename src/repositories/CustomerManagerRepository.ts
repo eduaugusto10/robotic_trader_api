@@ -16,7 +16,7 @@ export const customerManagerRepository = AppDataSource.getRepository(CustomerMan
             .where("customerId = :id", { id })
             .andWhere("date >= (now() - INTERVAL 12 month)")
             .groupBy("MONTH(date)")
-            .orderBy("date", "ASC")
+            .orderBy("date", "DESC")
             .getRawMany()
     },
     findTwelveMonths() {
